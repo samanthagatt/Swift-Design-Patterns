@@ -1,5 +1,6 @@
-# Design Patterns
-Paul Hudson
+# Swift Design Patterns
+Book by Paul Hudson
+(Notes by me)
 
 ## Intro
 * Coupling
