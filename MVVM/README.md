@@ -6,10 +6,10 @@
 > **Presentation Model**
 > * An object that stores the state of the app independently from the UI
 > * Represents the associated view fully but without any attachment to `UIKit`/`AppKit`
-    > * Reads and prepares data from model so it can be presented
-    > * Makes it much easier to test because there's no interaction with UI elements
+>     * Reads and prepares data from model so it can be presented
+>     * Makes it much easier to test because there's no interaction with UI elements
 > * Apple's view controllers would be more like views than controllers with this architecture
-    > * They should only dictate how to respond to events (e.g. implementing life cycle methods like `viewDidLoad`)
+>     * They should only dictate how to respond to events (e.g. implementing lifecycle methods like `viewDidLoad`)
 > * All presentation models should store the app state and views should display the state, but how do you get them synchronized?
 
 ## Data-Binding
@@ -31,3 +31,26 @@
     * Implement a large framework like RxSwift that includes binding
         * RxSwift is an incredibly different way of working
             * Not really a viable option if you only want data binding capabilities
+
+## Advantages
+* Biggest advantage is how much easier it makes testing
+   * Unit tests can be smaller and less complicated since there are no UI elements in the ViewModel
+   * Can provide the smaller view controller with mock ViewModels during testing without having to use live data
+* Frees up view controller so it can focus on responding to lifecycle events
+* Separates responsibilities reasonably well enough that beginners can understand it
+   * **Model:** stores data
+   * **View:** stores visual representations of data
+   * **ViewModel:** stores everything else
+* Has clear data flow as long as bindings aren't too hard
+   * Connects view model directly to views using two-way binding
+   * ViewModel manipulates your model
+   * View controller does next to nothing as nature intended
+
+## Disadvantages
+* Biggest disadvantage is a lot of boiler plate code is needed if you're not using data-binding
+   * Complexity will increase when using binding frameworks
+* Models are still usually very small (not much code goes into them)
+* Introduces complexity for smaller projects
+   * None of Apple's templates use MVVM so you will need to implement bindings or shuttle data to and from the ViewModel yourself each time
+* Pretty much just moves the duping ground for code from the controller (in MVC) to the ViewModel
+   * Common to find networking code, input/output, validation, and more all in the ViewModel
