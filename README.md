@@ -44,7 +44,7 @@ Book by Paul Hudson
 ### Disadvantages
 * View controllers frequently become very large and confusing
     * MVC makes it easy to add code to it even if it’s not the best place for it
-        * Results in the view controller conforming to a list of different protocols\
+        * Results in the view controller conforming to a list of different protocols
     * The word “controller” implies nothing is out of scope to be included since its role is to control things (the biggest responsibility)
 * Separation of concerns tend to blur
     * Should code to format data be held in the model, view, or controller?
@@ -58,10 +58,106 @@ Book by Paul Hudson
     * Where do I put networking code?
     * How do I control the flow of my app?
 
+### Fixing it
+#### Using more than one controller
+* There doesn't need to be only one controller in the app or even per screen
+   * Creating multiple controllers separated by functionality will alleviate the "massive view controller" concern
+* Apple's view controller containment makes it easy to add/remove child `ViewController`s
+    * Reusable extension to make it even easier
+    ```swift
+    // `@nonobjc` is used so it won't conflict with any Apple code
+    @nonobjc extension UIViewController {
+        func add(_ child: UIViewController, frame: CGRect? = nil) {
+            addChildViewController(child)
+            if let frame = frame {
+                child.view.frame = frame
+            }
+            view.addSubview(child.view)
+            child.didMove(toParentViewController: self)
+        }
+        func remove() {
+            willMove(toParentViewController: nil)
+            view.removeFromSuperview()
+            removeFromParentViewController()
+        }
+    }
+    ```
+    * Use cases
+        *  Most popular when you need to overlay one vc temporarily over top of another
+        * If one part of your screen is only loosely related to another
+            * Similar to `UISplitViewController`
+    * Good resource for view controller containment
+        * https://www.swiftbysundell.com/articles/custom-container-view-controllers-in-swift/
+#### Delegation
+* Creating dedicated classes to act as data sources and delegates helps isolate functionality and increase testability
+* e.g. `ChildFriendlyWebDelegate`
+    ```swift
+    class ChildFriendlyWebDelegate: NSObject, WKNavigationDelegate {
+        var childFriendlySites = ["apple.com", "google.com"]
+        
+        // Much easier to test the logic
+        // You don't need to make a mock webView like you would for the method below
+        func isAllowed(url: URL?) -> Bool {
+            guard let host = url?.host else { return false }
+            if childFriendlySites.contains(where: host.contains) {
+                return true
+            }
+            return false
+        }
+        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            if isAllowed(url: navigationAction.request.url) {
+                decisionHandler(.allow)
+            }
+            decisionHandler(.cancel)
+        }
+    }
+    
+    // Implementation
+    class ViewController: UIViewController {
+        @IBOutlet var webView: WKWebView!
+        
+        func viewDidLoad(animated: Bool) {
+            super.viewDidLoad(animated: true)
+            webView.navigationDelegate = ChildFriendlyWebDelegate()
+        }
+    }
+    ```
+
+#### Make use of `UIView`
+* Coding your user interface is perfectly fine, but do it in a UIView subclass
+    * All code relating to setting up and styling subviews should be handled in the parent `UIView` class
+    ```swift
+    class MyView: UIView {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            createSubviews()
+        }
+        required init?(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+            createSubviews()
+        }
+        func createSubviews() {
+            // all the layout code for subviews so it's not in the viewController's `viewDidLoad`
+        }
+    }
+    
+    // Implementation
+    class ViewController: UIViewController {
+        var shareView = SharePromptView()
+
+        override func loadView() {
+            view = shareView
+        }
+    }
+    ```
+#### Avoid the `AppDelegate`
+* Don't dump unrelated code in the app delegate
+    * It’s almost never the right place for it
+    * Stick to implementing `UIApplicationDelegate` protocol methods in the `AppDelegate`
+
 ## MVP (Model View Presenter)
 * Similar alternative to MVC
     * **Model:** Stores data
     * **View:** Stores passive UI elements that forward user input to the presenter
     * **Presenter:** Reads data from model, formats it, then displays it in views
 * Apple’s implementation of MVC seems more like MVP
-
