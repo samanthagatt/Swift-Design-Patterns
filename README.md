@@ -1,5 +1,5 @@
 # Swift Design Patterns
-Book by Paul Hudson  
+[Book by Paul Hudson](hws-SDP-05-26-19.zip)  
 (Notes by me)
 
 * [Intro](Intro/)
