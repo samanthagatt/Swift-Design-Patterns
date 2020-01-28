@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+// MARK: Two way binding
+
 struct User {
     var name: Observable<String>
 }
@@ -60,20 +63,56 @@ class BoundTextField: UITextField {
     }
 }
 
+
+// MARK: - Key Value Observing (KVO)
+
+class KVOUser: NSObject {
+    @objc dynamic var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+
+// MARK: - UI
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var usernameTextField: BoundTextField!
     
+    // Two way binding
     private var user = User(name: Observable("Samantha Gatt"))
+    /*
+     // Key value observing (only one way)
+     private var kvoUser = KVOUser(name: "Samantha Gatt")
+     private var observers: [NSKeyValueObservation] = []
+     */
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Two way binding
         usernameTextField.bind(to: user.name)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        /*
+         // Key value observing (only one way)
+         let observer = kvoUser.observe(\KVOUser.name, options: .new) { _, change in
+             print(change.newValue ?? "")
+             self.usernameTextField.text = change.newValue ?? ""
+         }
+         observers.append(observer)
+         usernameTextField.text = kvoUser.name
+         */
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            // Two way binding
             self.user.name.value = "Sammie"
+            
+            /*
+             // Key value observing (only one way)
+             self.kvoUser.name = "Sammie"
+             */
         }
     }
 }
-
