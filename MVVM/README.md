@@ -54,3 +54,14 @@
    * None of Apple's templates use MVVM so you will need to implement bindings or shuttle data to and from the ViewModel yourself each time
 * Pretty much just moves the duping ground for code from the controller (in MVC) to the ViewModel
    * Common to find networking code, input/output, validation, and more all in the ViewModel
+
+## VM of MVVM
+* The ViewModel wraps the entire model to prepare for visualization (without any actual UI code)
+   * The view should have no idea the model even exists
+* Formats model properties/values
+   * e.g. Converting a `Date` to a `String` so it can be displayed
+* Archives and Dearchives model data
+* Networking code
+* Data validation
+   * Can also be done in model
+   
