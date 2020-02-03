@@ -13,6 +13,7 @@
 		D6D319CE23E8714B006D79BD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6D319CC23E8714B006D79BD /* Main.storyboard */; };
 		D6D319D023E8714E006D79BD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6D319CF23E8714E006D79BD /* Assets.xcassets */; };
 		D6D319D323E8714E006D79BD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6D319D123E8714E006D79BD /* LaunchScreen.storyboard */; };
+		D6D319DC23E8718B006D79BD /* Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D319DB23E8718B006D79BD /* Delegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D6D319CF23E8714E006D79BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D6D319D223E8714E006D79BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D6D319D423E8714E006D79BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6D319DB23E8718B006D79BD /* Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				D6D319C623E8714B006D79BD /* AppDelegate.swift */,
 				D6D319C823E8714B006D79BD /* SceneDelegate.swift */,
+				D6D319DA23E8717F006D79BD /* Patterns */,
 				D6D319CA23E8714B006D79BD /* ViewController.swift */,
 				D6D319CC23E8714B006D79BD /* Main.storyboard */,
 				D6D319CF23E8714E006D79BD /* Assets.xcassets */,
@@ -65,6 +68,14 @@
 				D6D319D423E8714E006D79BD /* Info.plist */,
 			);
 			path = "Platform Patterns";
+			sourceTree = "<group>";
+		};
+		D6D319DA23E8717F006D79BD /* Patterns */ = {
+			isa = PBXGroup;
+			children = (
+				D6D319DB23E8718B006D79BD /* Delegate.swift */,
+			);
+			path = Patterns;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6D319DC23E8718B006D79BD /* Delegate.swift in Sources */,
 				D6D319CB23E8714B006D79BD /* ViewController.swift in Sources */,
 				D6D319C723E8714B006D79BD /* AppDelegate.swift in Sources */,
 				D6D319C923E8714B006D79BD /* SceneDelegate.swift in Sources */,
