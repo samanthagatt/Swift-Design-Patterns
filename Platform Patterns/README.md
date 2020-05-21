@@ -26,7 +26,7 @@
     - Many methods will begin with `will`, `did`, and `should`
 4. To maintain lower coupling, use a protocol for the delegate and implement it with an object (class or struct)
 5. Allow your delegate object to only implement the methods it wishes wherever possible
-    - Either expose your protocol to Objective C and mark them as `optional` or provide default implementations in an extension
+    - Either expose your protocol to Objective-C and mark them as `optional` or provide default implementations in an extension
 
 ### Data Sources
 * Specialized delegations that provide data rather than control behavior when an event occurrs
@@ -45,7 +45,7 @@
   * Having multiple small interfaces is better than one large one
 * **D**ependency inversion
   * Depending on abstractions is better than depending on concrete things/objects
-* Delegation is SO~~(L)~~ID
+* Delegation is SOID
   * Instead of combining a lot of functionality into one class, objects that adopt the single responsibility of a delegate can be used
   * Adopts open/closed principle so main object can be customized through extensions without modifying the code, instead of forcing the main object to be subclassed to control its behavior *(L in SOLID)*
   * Delegate and data source are broken into two smaller interfaces, instead of combining them into one protocol
@@ -58,3 +58,23 @@
 * Main object should function without a delegate but can throw errors without a data source if need be
 * Use protocol extensions to provide a default value for any optional methods (reccommended), or use `@objc` and mark it as optional
 * Try to separate delegates and data sources as much as possible
+
+## Target/Selector
+* Swift closures wreak havoc on Objective-C
+* Selectors are used instead
+  * Like object oriented function pointers for Objective-C
+  * Provide a generalized way to refer to functions and allow them to be used at some point in the future
+  * Used as a way to send messages to objects instead of calling the function
+* Selectors aren't enough to make a function call
+  * What do you call the function on?
+    * Objective-C uses **late binding** by default
+      * If a message gets sent to an object that can't understand it, it can pass it along to another object
+      * The final method that gets called at runtime might not be the one you meant to call
+      * Looking up functions at runtime provides flexibility but is frowned upon in Swift because it is error prone and prevents the compiler from performing aggressive optimization so it results in slower performance
+    * In Swift, target/selector pattern (temporarily) reverts back to Objective-C way of sending messages instead of calling methods
+      * `@objc` asks Swift to expose the function to Objective-C so it can generate an Objective-C thunk method for it
+      * Objective-C thunk method: a method that maps from the Objective-C way of calling functions to the Swift way
+  * What arguments should you give it?
+* Targets
+  * What you can call the given function on
+  * e.g. `UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addSong))` will call something like `self.addsong()`
