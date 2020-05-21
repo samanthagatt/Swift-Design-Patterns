@@ -28,8 +28,33 @@
 5. Allow your delegate object to only implement the methods it wishes wherever possible
     - Either expose your protocol to Objective C and mark them as `optional` or provide default implementations in an extension
 
-## Data Sources
+### Data Sources
 * Specialized delegations that provide data rather than control behavior when an event occurrs
 * No benefit in combining delegate and data source
   * Delegate and data source have different jobs so why combine them
 * Act as a thin layer above the model to provide shaping before models are used
+
+### SOLID
+* **S**ingle responsibility
+  * One object should be responsible for only one thing
+* **O**pen/Closed
+  * Should be open for extension but closed for modification
+* **L**iskov substitution
+  * Allows a subclass where its parent would be
+* **I**nterface segregation
+  * Having multiple small interfaces is better than one large one
+* **D**ependency inversion
+  * Depending on abstractions is better than depending on concrete things/objects
+* Delegation is SO~~(L)~~ID
+  * Instead of combining a lot of functionality into one class, objects that adopt the single responsibility of a delegate can be used
+  * Adopts open/closed principle so main object can be customized through extensions without modifying the code, instead of forcing the main object to be subclassed to control its behavior *(L in SOLID)*
+  * Delegate and data source are broken into two smaller interfaces, instead of combining them into one protocol
+  * Main objects can use any object that conforms to the appropriate protocol to hold the delegate/data source, instead of relying on a specific class
+
+### Suggestions
+* Try to use protocols for delegates and data sources to reduce coupling
+* Use `delegate` if there's only one or have the delegates end in `Delegate` if more than one
+* Pass in object that triggered event as first parameter in delegate methods (to abide by Apple conventions)
+* Main object should function without a delegate but can throw errors without a data source if need be
+* Use protocol extensions to provide a default value for any optional methods (reccommended), or use `@objc` and mark it as optional
+* Try to separate delegates and data sources as much as possible
