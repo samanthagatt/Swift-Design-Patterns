@@ -5,6 +5,7 @@
   * Hard to make any meaningful app without delegation
 * Definition:
   * One object that is asked to respond to events that happened in another (or to guide its behavior)
+  * One generalized object and one specialized object working in tandem
 * Most common example: `UITableView`'s `delegate` property
   * The table view will tell its delegate when specific events occur (e.g. when user taps on a cell)
 * Removes the neccessity to subclass main object (e.g. `UITableView`)
@@ -26,3 +27,9 @@
 4. To maintain lower coupling, use a protocol for the delegate and implement it with an object (class or struct)
 5. Allow your delegate object to only implement the methods it wishes wherever possible
     - Either expose your protocol to Objective C and mark them as `optional` or provide default implementations in an extension
+
+## Data Sources
+* Specialized delegations that provide data rather than control behavior when an event occurrs
+* No benefit in combining delegate and data source
+  * Delegate and data source have different jobs so why combine them
+* Act as a thin layer above the model to provide shaping before models are used
