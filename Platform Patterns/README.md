@@ -59,7 +59,7 @@
 * Use protocol extensions to provide a default value for any optional methods (reccommended), or use `@objc` and mark it as optional
 * Try to separate delegates and data sources as much as possible
 
-## Target/Selector
+## Selectors
 * Swift closures wreak havoc on Objective-C
 * Selectors are used instead
   * Like object oriented function pointers for Objective-C
@@ -73,8 +73,14 @@
       * Looking up functions at runtime provides flexibility but is frowned upon in Swift because it is error prone and prevents the compiler from performing aggressive optimization so it results in slower performance
     * In Swift, target/selector pattern (temporarily) reverts back to Objective-C way of sending messages instead of calling methods
       * `@objc` asks Swift to expose the function to Objective-C so it can generate an Objective-C thunk method for it
-      * Objective-C thunk method: a method that maps from the Objective-C way of calling functions to the Swift way
+      * **Objective-C thunk method**: a method that maps from the Objective-C way of calling functions to the Swift way
   * What arguments should you give it?
+* Closures are preferable to selectors when you're making your own types/objects
+
+### Target/Action
+* Pretty much the only useful way to use selectors in Swift
+  * Other uses are too unsafe to be beneficial unless you have a particularly troubling challenge
 * Targets
   * What you can call the given function on
   * e.g. `UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addSong))` will call something like `self.addsong()`
+* Storyboards use this pattern when you create an IBAction
